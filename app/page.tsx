@@ -1,5 +1,9 @@
 "use client";
 
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import Planet from "./planet";
+
 export default function SpaceVisual() {
   const planets = ["Earth", "Mars", "Jupiter", "Saturn", "Neptune"];
 
@@ -29,16 +33,23 @@ export default function SpaceVisual() {
         {/* Main Viewer Area */}
         <section className="relative flex flex-1 items-center justify-center">
           {/* Planet Viewer Placeholder */}
-          <div className="relative flex h-[380px] w-[380px] items-center justify-center rounded-full md:h-[520px] md:w-[520px]">
-            {/* Glow */}
-            <div className="absolute h-full w-full rounded-full bg-blue-500/20 blur-3xl" />
+          <div className="relative h-[380px] w-[380px] md:h-[520px] md:w-[520px]">
+  <Canvas camera={{ position: [0, 0, 5] }}>
+    <ambientLight intensity={1.2} />
 
-            {/* Planet Placeholder */}
-            <div className="planet-shadow absolute h-[85%] w-[85%] rounded-full bg-gradient-to-br from-slate-300 via-slate-500 to-slate-900 shadow-2xl" />
+    <directionalLight
+      position={[5, 3, 5]}
+      intensity={2}
+    />
 
-            {/* Light Reflection */}
-            <div className="absolute left-[22%] top-[20%] h-24 w-24 rounded-full bg-white/20 blur-2xl" />
-          </div>
+    <Planet />
+
+    <OrbitControls
+      enableZoom={false}
+      autoRotate={false}
+    />
+  </Canvas>
+</div>
 
           {/* Left Info Panel */}
           <div className="absolute left-0 top-1/2 hidden w-[260px] -translate-y-1/2 rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl lg:block">
