@@ -156,7 +156,13 @@ export default function SpaceVisual() {
   );
 }
 
-function InfoItem({ label, value }) {
+function InfoItem({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
   return (
     <div className="flex items-center justify-between border-b border-white/5 pb-3">
       <span className="text-sm text-white/45">{label}</span>
