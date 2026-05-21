@@ -1,65 +1,155 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+export default function SpaceVisual() {
+  const planets = ["Earth", "Mars", "Jupiter", "Saturn", "Neptune"];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="relative h-screen overflow-hidden bg-black text-white">
+      {/* Background */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.18),transparent_35%),radial-gradient(circle_at_bottom,rgba(168,85,247,0.12),transparent_35%)]" />
+
+      {/* Stars */}
+      <div className="absolute inset-0 opacity-70">
+        <div className="stars" />
+        <div className="stars2" />
+      </div>
+
+      {/* Blur Overlay */}
+      <div className="absolute inset-0 backdrop-blur-[1px]" />
+
+      {/* Main Content */}
+      <div className="relative z-10 flex h-full flex-col px-6 py-6 md:px-12">
+        {/* Header */}
+        <header className="flex items-center justify-between">
+          <h1 className="text-2xl font-semibold tracking-[0.25em] text-white/95 md:text-3xl">
+            SpaceVisual
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+        </header>
+
+        {/* Main Viewer Area */}
+        <section className="relative flex flex-1 items-center justify-center">
+          {/* Planet Viewer Placeholder */}
+          <div className="relative flex h-[380px] w-[380px] items-center justify-center rounded-full md:h-[520px] md:w-[520px]">
+            {/* Glow */}
+            <div className="absolute h-full w-full rounded-full bg-blue-500/20 blur-3xl" />
+
+            {/* Planet Placeholder */}
+            <div className="planet-shadow absolute h-[85%] w-[85%] rounded-full bg-gradient-to-br from-slate-300 via-slate-500 to-slate-900 shadow-2xl" />
+
+            {/* Light Reflection */}
+            <div className="absolute left-[22%] top-[20%] h-24 w-24 rounded-full bg-white/20 blur-2xl" />
+          </div>
+
+          {/* Left Info Panel */}
+          <div className="absolute left-0 top-1/2 hidden w-[260px] -translate-y-1/2 rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl lg:block">
+            <p className="mb-6 text-sm uppercase tracking-[0.3em] text-white/40">
+              Planet Data
+            </p>
+
+            <div className="space-y-5">
+              <InfoItem label="Gravity" value="--" />
+              <InfoItem label="Diameter" value="--" />
+              <InfoItem label="Temperature" value="--" />
+              <InfoItem label="Moons" value="--" />
+            </div>
+          </div>
+
+          {/* Right Info Panel */}
+          <div className="absolute right-0 top-1/2 hidden w-[260px] -translate-y-1/2 rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl lg:block">
+            <p className="mb-6 text-sm uppercase tracking-[0.3em] text-white/40">
+              API Information
+            </p>
+
+            <div className="space-y-4 text-sm text-white/70">
+              <p>
+                Dynamic information from the selected planet will appear here.
+              </p>
+
+              <div className="rounded-2xl border border-white/10 bg-black/20 p-4 text-white/50">
+                Waiting for API response...
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Planet Selector */}
+        <footer className="flex flex-col items-center gap-5 pb-4">
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {planets.map((planet) => (
+              <button
+                key={planet}
+                className="rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm text-white/70 transition-all duration-300 hover:border-blue-400/30 hover:bg-blue-500/10 hover:text-white"
+              >
+                {planet}
+              </button>
+            ))}
+          </div>
+
+          {/* Search Input */}
+          <div className="w-full max-w-md">
+            <input
+              type="text"
+              placeholder="Search planet or space object..."
+              className="w-full rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm text-white outline-none backdrop-blur-xl placeholder:text-white/35 focus:border-blue-400/40"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+          </div>
+        </footer>
+      </div>
+
+      {/* Styles */}
+      <style jsx>{`
+        .stars,
+        .stars2 {
+          position: absolute;
+          inset: 0;
+          background-image:
+            radial-gradient(2px 2px at 20px 30px, white, transparent),
+            radial-gradient(2px 2px at 40px 70px, white, transparent),
+            radial-gradient(1px 1px at 90px 40px, white, transparent),
+            radial-gradient(1px 1px at 130px 80px, white, transparent),
+            radial-gradient(2px 2px at 160px 30px, white, transparent);
+          background-repeat: repeat;
+          background-size: 220px 220px;
+          animation: moveStars 80s linear infinite;
+        }
+
+        .stars2 {
+          opacity: 0.4;
+          animation-duration: 140s;
+        }
+
+        .planet-shadow {
+          animation: floatPlanet 8s ease-in-out infinite;
+        }
+
+        @keyframes moveStars {
+          from {
+            transform: translateY(0px);
+          }
+          to {
+            transform: translateY(-220px);
+          }
+        }
+
+        @keyframes floatPlanet {
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-12px);
+          }
+        }
+      `}</style>
+    </main>
+  );
+}
+
+function InfoItem({ label, value }) {
+  return (
+    <div className="flex items-center justify-between border-b border-white/5 pb-3">
+      <span className="text-sm text-white/45">{label}</span>
+      <span className="text-sm text-white">{value}</span>
     </div>
   );
 }
